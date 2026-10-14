@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="theme-color" content="#101419">
+    <link rel="icon" href="data:,">
+    <meta name="description" content="Signal 饮品行业情报工作台：从社媒采集、人工复核到 AI 分析与报告交付。">
+    <title>Signal 饮品行业情报工作台 · 肖承希</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#overview">跳转到项目内容</a>
+    <div class="page-shell signal-detail-shell">
+      <header class="identity detail-identity">
+        <div>
+          <p class="detail-brand"><a href="../index.html">肖承希 <span aria-hidden="true">/</span> 作品集</a></p>
+          <h2>AI 应用开发 / AI 自动化</h2>
+          <p class="identity-intro">把 AI 能力接进真实工作流，<br>让信息整理、分析与交付更可靠。</p>
+          <nav class="section-nav" aria-label="项目导航">
+            <a href="../index.html#projects"><span class="nav-line"></span><span>返回项目</span></a>
+            <a href="#overview" class="active"><span class="nav-line"></span><span>项目概览</span></a>
+            <a href="#workflow"><span class="nav-line"></span><span>工作流程</span></a>
+            <a href="#architecture"><span class="nav-line"></span><span>系统架构</span></a>
+            <a href="#decisions"><span class="nav-line"></span><span>设计取舍</span></a>
+          </nav>
+        </div>
+        <div class="social-links" aria-label="项目外部链接">
+          <a href="https://signal-beverage-intelligence.onrender.com/" target="_blank" rel="noopener noreferrer">线上演示 ↗</a>
+          <a href="https://github.com/ki22sh0tl-lang/signal-beverage-intelligence" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </div>
+      </header>
+
+      <main>
+        <section id="overview" class="content-section" aria-labelledby="overview-title">
+          <p class="detail-overline">重点案例 / AI 应用开发</p>
+          <h1 class="detail-title" id="overview-title">Signal｜饮品行业情报工作台</h1>
+          <p class="detail-lead">为饮品品牌的市场与内容团队解决社媒信息分散、人工归并混乱、分析报告难以交付的问题。</p>
+          <div class="detail-actions">
+            <a class="button-link primary" href="https://signal-beverage-intelligence.onrender.com/" target="_blank" rel="noopener noreferrer">打开线上演示 ↗</a>
+            <a class="button-link" href="https://github.com/ki22sh0tl-lang/signal-beverage-intelligence" target="_blank" rel="noopener noreferrer">查看 GitHub 源码 ↗</a>
+          </div>
+          <img fetchpriority="high" class="detail-hero-image" src="../assets/signal-preview-1280.webp" srcset="../assets/signal-preview-640.webp 640w, ../assets/signal-preview-1280.webp 1280w" sizes="(max-width: 1199px) 90vw, 1120px" alt="Signal 饮品行业情报工作台首页截图" width="1280" height="800">
+          <div class="detail-section">
+            <h2 class="case-heading">业务问题</h2>
+            <p>饮品行业的新品、联名和活动信息散落在社媒中，团队需要从零散内容里形成判断，但手工整理难以保持分类一致，也容易丢失证据。</p>
+          </div>
+
+          <section id="architecture" class="content-section architecture-section" aria-labelledby="architecture-title">
+            <h2 class="case-heading" id="architecture-title">系统架构</h2>
+            <p class="architecture-open"><a href="../assets/signal-fde-architecture.html?theme=dark" target="_blank" rel="noopener noreferrer">新窗口打开完整架构图 ↗</a></p>
+            <p class="diagram-hint">左右滑动查看图中细节，也可打开完整图。</p>
+            <div tabindex="0" role="region" aria-label="可横向滚动的项目架构图" class="architecture-frame signal-architecture-frame">
+              <iframe src="../assets/signal-fde-architecture.html?embed=1&amp;theme=dark" title="Signal FDE 饮品行业情报工作台架构图" loading="lazy" allowfullscreen></iframe>
+            </div>
+          </section>
+
+          <div class="detail-section">
+            <h2 class="case-heading">我的做法</h2>
+            <p>我从实际分析流程出发，独立搭建了 Signal 工作台，串起内容采集、归并、人工复核、AI 洞察和报告交付，让每项结论都能回到原始内容核对，并通过可操作的线上演示验证完整流程。</p>
+          </div>
+        </section>
+
+        <section id="workflow" class="content-section" aria-labelledby="workflow-title">
+          <h2 class="mobile-heading" id="workflow-title">工作流程</h2>
+          <div class="detail-section">
+            <h3>从原始内容到可交付报告</h3>
+            <ol>
+              <li><strong>采集与导入。</strong>浏览器助手由用户主动读取当前小红书笔记的可见内容，也支持 CSV 导入；不读取 Cookie，不做批量抓取。</li>
+              <li><strong>整理与复核。</strong>识别品牌与动作候选，支持分类、归并、标签和排除。报告只使用已确认、未排除的记录，确认后默认锁定。</li>
+              <li><strong>统计与分析。</strong>按品牌、动作、新品、联名、活动等维度统计内容数量和点赞表现；接入 DeepSeek 兼容接口辅助分析。</li>
+              <li><strong>报告交付。</strong>结论可回溯到原始内容，并支持 CSV 与 Word 导出。</li>
+            </ol>
+          </div>
+          <div class="detail-section">
+            <h3>我的个人贡献</h3>
+            <p>我完成浏览器采集助手、数据导入与整理、人工复核、统计报告、AI 分析、文件导出，以及 GitHub 与 Render 上线，形成了可操作的端到端产品流程。</p>
+          </div>
+        </section>
+
+        <section id="decisions" class="content-section" aria-labelledby="decisions-title">
+          <h2 class="mobile-heading" id="decisions-title">设计取舍</h2>
+          <div class="detail-section">
+            <h3>AI 辅助，不替代证据判断</h3>
+            <p>固定提示词要求模型区分事实、推断、建议和待验证信息，并说明证据与样本限制。点赞只作为内容互动信号，不直接解释为销量或市场份额。没有 API Key 时，演示环境也能查看预置分析示例。</p>
+          </div>
+          <div class="detail-section">
+            <h3>技术与边界</h3>
+            <p>工作台使用 Node.js、原生 HTML/CSS/JavaScript 与 PapaParse。统计口径由确定性代码计算，AI 生成内容经过人的检查；当前页可见内容的主动采集限定了浏览器扩展的权限范围。</p>
+            <p class="detail-note">线上版本含合成演示样本，用于展示流程，并不代表真实品牌表现；目前没有可核验的客户提效或业务增长数据。</p>
+          </div>
+          <div class="detail-section">
+            <a class="button-link" href="../index.html#projects">← 返回项目列表</a>
+          </div>
+        </section>
+
+        <nav class="case-next" aria-label="继续浏览项目"><a href="creative-workbench.html"><span>下一个项目</span><strong>创意内容实验与复盘工作台 ↗</strong></a></nav>
+        <footer class="site-footer"><p>© 肖承希 · AI 应用开发与自动化</p><a href="mailto:2530223804@qq.com">联系我 ↗</a></footer>
+      </main>
+    </div>
+    <script src="../script.js" defer></script>
+  </body>
+</html>
