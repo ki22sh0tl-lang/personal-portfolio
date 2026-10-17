@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Prism Market 数据处理链路",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "viewBox": [1080, 520]
+  },
+  "stages": [
+    { "label": "数据接入" },
+    { "label": "标准化处理" },
+    { "label": "数据留存" },
+    { "label": "查询、计算与推送" },
+    { "label": "研究与复核" }
+  ],
+  "nodes": [
+    { "id": "historical-input", "type": "external", "label": "文件 / 历史行情", "sublabel": "文件 / Yahoo Finance", "stage": 0, "row": 0, "width": 150, "height": 80 },
+    { "id": "historical-standard", "type": "backend", "label": "映射与质量校验", "sublabel": "Pandas · 口径确认", "stage": 1, "row": 0, "width": 150, "height": 80 },
+    { "id": "historical-snapshot", "type": "database", "label": "标准历史快照", "sublabel": "Parquet · SHA-256", "stage": 2, "row": 0, "width": 150, "height": 80 },
+    { "id": "historical-query", "type": "backend", "label": "查询与指标计算", "sublabel": "FastAPI · DuckDB", "stage": 3, "row": 0, "width": 150, "height": 80 },
+    { "id": "historical-dashboard", "type": "frontend", "label": "历史研究看板", "sublabel": "走势 · 风险 · 溯源", "stage": 4, "row": 0, "width": 150, "height": 80 },
+    { "id": "local-review", "type": "frontend", "label": "本地指标复核", "sublabel": "Streamlit", "stage": 4, "row": 1, "width": 150, "height": 80 },
+    { "id": "quote-source", "type": "external", "label": "公开 WebSocket", "sublabel": "Yahoo Finance", "stage": 0, "row": 2, "width": 150, "height": 80 },
+    { "id": "quote-validation", "type": "backend", "label": "实时报价处理", "sublabel": "Protobuf · 校验去重", "stage": 1, "row": 2, "width": 150, "height": 80 },
+    { "id": "quote-push", "type": "backend", "label": "FastAPI · SSE", "sublabel": "2 秒推送 · 自动重连", "stage": 3, "row": 2, "width": 150, "height": 80 },
+    { "id": "quote-dashboard", "type": "frontend", "label": "实时观察工作台", "sublabel": "报价 · 增量曲线", "stage": 4, "row": 2, "width": 150, "height": 80 },
+    { "id": "quote-storage", "type": "database", "label": "分钟 Parquet", "sublabel": "批量落盘 · 失败重试", "stage": 2, "row": 1, "width": 150, "height": 80 },
+    { "id": "quote-samples", "type": "backend", "label": "已存采样查询", "sublabel": "DuckDB · CSV 导出", "stage": 3, "row": 1, "width": 150, "height": 80 }
+  ],
+  "flows": [
+    { "id": "history-ingest", "from": "historical-input", "to": "historical-standard", "label": "原始数据" },
+    { "id": "history-store", "from": "historical-standard", "to": "historical-snapshot", "label": "标准行情" },
+    { "id": "history-read", "from": "historical-snapshot", "to": "historical-query", "label": "参数化 SQL" },
+    { "id": "history-display", "from": "historical-query", "to": "historical-dashboard", "label": "指标切片", "route": "straight" },
+    { "id": "history-review", "from": "historical-query", "to": "local-review", "label": "本地复核", "fromSide": "bottom", "toSide": "top", "via": [[745, 225], [960, 225]] },
+    { "id": "quote-decode", "from": "quote-source", "to": "quote-validation", "label": "流报价", "variant": "emphasis" },
+    { "id": "quote-stream", "from": "quote-validation", "to": "quote-push", "label": "有效报价", "variant": "emphasis", "route": "straight" },
+    { "id": "quote-display", "from": "quote-push", "to": "quote-dashboard", "label": "SSE 增量", "variant": "emphasis", "route": "straight", "labelDy": 30 },
+    { "id": "quote-flush", "from": "quote-validation", "to": "quote-storage", "label": "10 秒批写" },
+    { "id": "quote-read", "from": "quote-storage", "to": "quote-samples", "label": "采样分片" },
+    { "id": "quote-replay", "from": "quote-samples", "to": "quote-dashboard", "label": "查询 / 导出" }
+  ]
+}

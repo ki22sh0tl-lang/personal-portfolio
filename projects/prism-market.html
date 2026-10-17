@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="theme-color" content="#101419">
+    <meta name="description" content="Prism Market 金融数据研究工作台：用 Python、SQL 与 DuckDB 连接行情接入、数据校验、收益风险计算和可追溯的交互看板。">
+    <link rel="icon" href="data:,">
+    <title>Prism Market · 金融数据研究工作台 · 肖承希</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#overview">跳转到项目内容</a>
+    <div class="page-shell signal-detail-shell">
+      <header class="detail-identity">
+        <p class="detail-brand"><a href="../index.html">肖承希 <span aria-hidden="true">/</span> 作品集</a></p>
+        <nav class="section-nav" aria-label="项目导航">
+          <a href="../index.html#projects">返回项目</a>
+          <a href="#overview" class="active">项目概览</a>
+          <a href="#architecture">系统架构</a>
+          <a href="#workflow">数据流程</a>
+          <a href="#decisions">设计取舍</a>
+        </nav>
+      </header>
+      <main>
+        <section id="overview" class="content-section" aria-labelledby="overview-title">
+          <p class="detail-overline">数据处理 / 交互可视化</p>
+          <h1 class="detail-title" id="overview-title">Prism Market<span class="detail-title-subline">金融数据研究工作台</span></h1>
+          <p class="detail-lead">为金融数据研究者连接文件与行情接入、质量校验、收益风险计算和交互看板，让研究结论可以回到原始数据与计算过程复核。</p>
+          <div class="detail-actions">
+            <a class="button-link primary" href="https://prism-market-demo.onrender.com/" target="_blank" rel="noopener noreferrer">打开项目首页 ↗</a>
+            <a class="button-link" href="https://prism-market-demo.onrender.com/app?view=live" target="_blank" rel="noopener noreferrer">体验实时工作台 ↗</a>
+          </div>
+          <img class="detail-hero-image" src="../assets/prism-market-home-1280.webp" srcset="../assets/prism-market-home-640.webp 640w, ../assets/prism-market-home-1280.webp 1280w" sizes="(max-width: 1199px) 90vw, 1120px" width="1280" height="889" alt="Prism Market 项目介绍首页，右侧为标注日期范围的真实 ETF 历史曲线" fetchpriority="high">
+          <div class="detail-section">
+            <h2 class="case-heading">业务问题</h2>
+            <p>金融研究数据来自不同文件与行情接口，字段差异、日期缺行和复权口径都会影响比较结果。研究者需要在共同时间区间分析资产，同时核对数据来源、质量问题和指标算法；实时价格的新鲜度也需要明确呈现。</p>
+          </div>
+          <section id="architecture" class="content-section architecture-section" aria-labelledby="architecture-title">
+            <h2 class="case-heading" id="architecture-title">系统架构</h2>
+            <p class="architecture-open"><a href="../assets/prism-market-dataflow.html?theme=dark" target="_blank" rel="noopener noreferrer">新窗口打开完整数据流图 ↗</a></p>
+            <p class="diagram-hint">左右滑动查看图中细节，也可打开完整图。</p>
+            <div class="architecture-frame prism-dataflow-frame" tabindex="0" role="region" aria-label="可横向滚动的 Prism Market 历史研究与实时报价数据流图">
+              <iframe src="../assets/prism-market-dataflow.html?embed=1&amp;theme=dark" title="Prism Market 从历史数据校验、实时行情接入到查询计算与研究复核的双链路数据流" loading="lazy" allowfullscreen></iframe>
+            </div>
+          </section>
+          <div class="detail-section">
+            <h2 class="case-heading">我的做法</h2>
+            <p>我把数据接入、标准化、查询计算与交互页面串成完整流程：历史链路保留原始文件、哈希与质量记录，实时链路呈现源时间、接收时间和存储状态，让使用者能够沿着图表检查数据，再通过 SQL、CSV 与本地复核页面核对结果。</p>
+          </div>
+        </section>
+        <section id="workflow" class="content-section" aria-labelledby="workflow-title">
+          <h2 class="mobile-heading" id="workflow-title">数据流程</h2>
+          <div class="detail-section">
+            <h3>从原始文件到研究结果</h3>
+            <ol>
+              <li><strong>接入与映射。</strong>本地支持 CSV、Excel、Parquet 导入，识别字段后由人确认代码、日期、价格及市场、币种、复权口径，保留原始文件与 SHA-256 哈希。</li>
+              <li><strong>质量校验。</strong>检查重复证券日期、非法价格和 OHLC 关系，生成标准化 Parquet。资产比较使用共同有效区间，中间缺行不静默填补。</li>
+              <li><strong>查询与计算。</strong>DuckDB 执行参数化 SQL 和日、周、月重采样，Pandas / NumPy 计算收益、最大回撤、年化波动、基准收益差与相关性。</li>
+              <li><strong>联动与复核。</strong>资产、基准和日期联动更新趋势、K 线与风险图表；查看来源、质量问题及 SQL，导出研究区间行情，并在本地 Streamlit 页面复核指标。</li>
+            </ol>
+          </div>
+          <div class="detail-section">
+            <h3>实时行情与增量更新</h3>
+            <p>后端共享公开 WebSocket 连接，解码 Protobuf 后校验价格与时间，去重并隔离乱序报价。每 2 秒通过 SSE 推送网页，每 10 秒批量写入分钟 Parquet 分片，供 DuckDB 查询和 CSV 导出。</p>
+            <p>断线后重新连接并订阅观察池，落盘失败保留重试与错误状态；网页更新保留图表缩放和键盘焦点。源时间、接收时间、最后报价与连接状态分别显示，休市时也能识别旧值。</p>
+          </div>
+          <div class="detail-section">
+            <h3>我的个人贡献</h3>
+            <p>我负责将金融研究需求拆成数据接入、质量规则、指标口径、API 和页面交互，围绕字段映射、图表联动、实时状态与数据溯源推动实现和迭代，并完成项目介绍首页、公开只读演示与本地指标复核入口。</p>
+          </div>
+        </section>
+        <section id="decisions" class="content-section" aria-labelledby="decisions-title">
+          <h2 class="mobile-heading" id="decisions-title">设计取舍</h2>
+          <div class="detail-section">
+            <h3>历史与实时分别解释</h3>
+            <p>历史研究使用固定复权快照，实时报价保留原始未复权价格，两者分别展示与计算。分钟收盘快照与流报价采样也保持独立，避免将稀疏采样解释为完整逐笔成交或 OHLCV。</p>
+          </div>
+          <div class="detail-section">
+            <h3>让指标口径可以被检查</h3>
+            <p>区间收益为末价 / 初价 − 1；最大回撤取价格 / 此前峰值 − 1 的区间最小值；年化波动使用有效相邻日收益的样本标准差乘以 √252。缺行及其下一日期不产生日收益，相关性要求至少三个共同有效样本。</p>
+            <p>界面同时保留来源、字段映射、文件哈希、研究参数和 SQL，使图表展示与指标解释对应到同一份数据。</p>
+          </div>
+          <div class="detail-section">
+            <h3>技术与交付选择</h3>
+            <p>使用 Python、Pandas / NumPy 处理数据，以 Parquet 保留标准快照，DuckDB 完成文件查询与聚合，适合当前本地单用户研究场景。FastAPI 同源提供网页、接口与 SSE，前端使用 ECharts 和 TradingView Lightweight Charts，Streamlit 提供本地复核界面。</p>
+          </div>
+          <div class="detail-section">
+            <h3>成果与项目限制</h3>
+            <p>已形成可访问的项目首页、历史研究和实时观察工作台，走通接入、校验、计算、溯源与导出。内置真实历史样本包含 12 只美股 ETF、6,012 行，覆盖 2023-10-02 至 2025-09-30；来源为 Yahoo Finance，合成异常样例单独标识。</p>
+            <p class="detail-note">公开演示只读，文件导入与 Streamlit 复核需运行本地版，源码仓库为私有。历史快照不会自动更新到今天；公开行情源的时延与覆盖无保证，Render Free 会休眠，重启或部署可能丢失临时采样数据。当前未实现账户持仓绩效、交易执行或策略回测。</p>
+          </div>
+          <div class="detail-section"><a class="button-link" href="../index.html#prism-market-project">← 返回项目列表</a></div>
+        </section>
+        <nav class="case-next" aria-label="继续浏览项目"><a href="signal.html"><span>继续浏览</span><strong>Signal · 饮品行业情报工作台 ↗</strong></a></nav>
+        <footer class="site-footer"><p>© 肖承希 · AI 应用开发与自动化</p><a href="mailto:2530223804@qq.com">联系我 ↗</a></footer>
+      </main>
+    </div>
+    <script src="../script.js" defer></script>
+  </body>
+</html>
