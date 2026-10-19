@@ -93,6 +93,10 @@ h1,h2,h3{font-weight:600;text-wrap:balance}
 .experience-list h3{font-size:26px;margin-bottom:0;letter-spacing:-.03em}
 .experience-list .company{color:var(--heading);font-size:13px;margin:4px 0 20px}
 .experience-list p:not(.company):not(.entry-date){font-size:15px;line-height:1.95;max-width:560px}
+.experience-highlights{padding-left:18px;margin:0;max-width:560px;font-size:15px;line-height:1.95}
+.experience-highlights>li+li{margin-top:14px}
+.experience-highlights li::marker{color:var(--accent)}
+.experience-highlights a{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
 .contact-section{border-top:1px solid var(--line);padding:96px 0 104px}
 .contact-section h2{font-size:clamp(42px,5.8vw,80px);letter-spacing:-.06em;line-height:1.25;margin:0 0 40px}
 .contact-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
