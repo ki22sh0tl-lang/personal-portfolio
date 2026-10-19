@@ -28,7 +28,7 @@ h1,h2,h3{font-weight:600;text-wrap:balance}
 .section-nav a:hover::after,.section-nav a.active::after{transform:scaleX(1)}
 .header-contact{color:var(--heading);font-size:13px}
 .header-contact span{margin-left:22px;color:var(--accent)}
-.hero{position:relative;display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center;min-height:700px;padding:94px 0 106px}
+.hero{position:relative;display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center;min-height:700px;padding:48px 0 64px}
 .hero-copy{position:relative;z-index:2}
 .eyebrow,.section-kicker{font-family:"Segoe UI",system-ui,sans-serif;color:var(--accent);font-size:11px;font-weight:600;letter-spacing:.17em;margin:0 0 28px}
 .hero h1{font-size:clamp(45px,5.2vw,77px);letter-spacing:-.065em;line-height:1.24;margin:0 0 28px;white-space:nowrap}
@@ -87,6 +87,11 @@ h1,h2,h3{font-weight:600;text-wrap:balance}
 .profile-facts>div{display:grid;grid-template-columns:100px 1fr;gap:20px;padding:15px 0;border-top:1px solid var(--line)}
 .profile-facts dt{color:var(--text)}
 .profile-facts dd{color:var(--heading);margin:0}
+.hero-about{max-width:560px;margin-bottom:24px}
+.hero-about>p{font-size:14px;line-height:1.85;margin-bottom:14px}
+.hero-about .about-lead{font-size:18px;line-height:1.8;margin-bottom:18px}
+.hero-about .profile-facts{margin-top:20px}
+.hero-about .profile-facts>div{padding:8px 0}
 .experience-list{padding:0;margin:0;list-style:none}
 .experience-list>li+li{margin-top:42px;padding-top:42px;border-top:1px solid var(--line)}
 .entry-date{font-family:Consolas,monospace;color:var(--accent);font-size:11px;margin-bottom:20px;letter-spacing:.04em}
